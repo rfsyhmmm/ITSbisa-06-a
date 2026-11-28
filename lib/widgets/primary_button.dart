@@ -36,10 +36,7 @@ class PrimaryButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               )
-            : Text(
-                label,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+            : Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
       ),
     );
   }

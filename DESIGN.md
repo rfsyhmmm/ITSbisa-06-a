@@ -13,7 +13,7 @@ Kalau butuh warna atau komponen baru, tambahkan di sana dulu, lalu catat di file
 
 | Nama di kode | Hex | Dipakai untuk |
 |---|---|---|
-| `AppColors.primary` | `#0CC0D9` | Tombol utama, menu bawah aktif, progress bar, gelombang |
+| `AppColors.primary` | `#0CC0D9` (BiruMuda/B300) | Tombol utama, menu bawah aktif, progress bar, gelombang |
 | `AppColors.primaryLight` | `#E7F9FB` | Latar Login/Register/Splash, latar ikon |
 | `AppColors.navy` | `#0B2A5B` | Logo, tombol **Donasi** di detail kampanye, ikon header |
 | `AppColors.background` | `#F7FBFC` | Latar halaman umum |
@@ -22,6 +22,9 @@ Kalau butuh warna atau komponen baru, tambahkan di sana dulu, lalu catat di file
 | `AppColors.textSecondary` | `#8A94A6` | Teks keterangan, hint, menu bawah tidak aktif |
 | `AppColors.border` | `#DDE3EA` | Garis kolom input, latar progress bar |
 | `AppColors.verified` | `#2F80ED` | Ikon centang akun terverifikasi |
+| `AppColors.success` / `successLight` | `#1E9E5A` / `#E3F6EC` | Status Berhasil, Selesai, Dicairkan |
+| `AppColors.warning` / `warningLight` | `#D98A00` / `#FFF3DC` | Menunggu pembayaran, Menunggu verifikasi |
+| `AppColors.danger` / `dangerLight` | `#D64545` / `#FDE8E8` | Gagal, Ditolak, Perlu perbaikan |
 
 Aset dari Figma (`assets/images/`): `wave_top.png` (Login/Register), `wave_bottom.png` (Splash), `logo_itsbisa.png` (Splash, header Home). Semua masih export 1x; export ulang 3x supaya lebih tajam.
 
@@ -59,22 +62,62 @@ cek nama font di panel kanan Figma, lalu pasang lewat folder `assets/fonts` dan 
 | Judul bagian | `section_header.dart` | `SectionHeader(title: 'Kampanye Aktif', onSeeAll: ...)` |
 | Gelombang | `wave_background.dart` | `WaveBackground()`; gelombang bawah: `WaveBackground(atBottom: true)` |
 | Isi sementara | `placeholder_view.dart` | Untuk halaman yang belum dikerjakan |
+| Foto sampul kampanye | `campaign_cover.dart` | `CampaignCover(url: c.coverImageUrl, height: 200)` |
+| Label status | `status_chip.dart` | `StatusChip(label: c.statusLabel, tone: campaignTone(c.status))` |
+| Error / kosong | `async_states.dart` | `ErrorRetry(...)`, `EmptyState(...)`, `showSnack(context, '...')` |
+| Rekening pencairan | `payout_sheet.dart` | `PayoutCard(info: ..., onEdit: ...)`, `PayoutSheet.show(context, info)` |
 
 ## 5. Daftar halaman
 
-| Figma | Rute | File | Status |
-|---|---|---|---|
-| Splash | `/` (halaman pertama) | `screens/splash/splash_page.dart` | Sesuai Figma |
-| Login / Register | `/masuk` (belum login) | `screens/auth/auth_page.dart` | Sesuai Figma |
-| Home | `/masuk` (sudah login), tab 1 | `screens/home/home_page.dart` | Kerangka, data contoh |
-| Donasi (daftar) | tab 2 | `screens/donasi/donasi_page.dart` | Kerangka |
-| Riwayat | tab 3 | `screens/riwayat/riwayat_page.dart` | Placeholder |
-| Profil | tab 4 | `screens/profil/profil_page.dart` | Kerangka + tombol Keluar |
-| Donation Detail | `/kampanye/detail` | `screens/campaign/campaign_detail_page.dart` | Kerangka |
-| Donation overlay, filled, payment | `/donasi/form` | `screens/campaign/donation_form_page.dart` | Placeholder |
-| Donation Success | (belum) | (belum dibuat) | Belum |
-| Notifikasi (ikon lonceng) | `/notifikasi` | `screens/notifikasi/notifications_page.dart` | Placeholder |
-| Galang Dana | `/kampanye/ajukan` | `screens/campaign/submit_campaign_page.dart` | Placeholder |
+Halaman alur kampanye & donasi mengikuti frame **Canonical UI** di halaman Figma
+`ITSBisa_sandbox_codex w13` (kode frame di kolom pertama).
+
+| Figma | Rute | File |
+|---|---|---|
+| Splash | `/` | `screens/splash/splash_page.dart` |
+| Login / Register | `/masuk` (belum login) | `screens/auth/auth_page.dart` |
+| Home | tab 1 | `screens/home/home_page.dart` |
+| S02.02 Temukan Kampanye, S02.03 Hasil Pencarian | tab 2 | `screens/donasi/donasi_page.dart` |
+| S05.06 Riwayat | tab 3 | `screens/riwayat/riwayat_page.dart` |
+| Profil (+ Panel Admin) | tab 4 | `screens/profil/profil_page.dart` |
+| Detail kampanye | `/kampanye/detail` | `screens/campaign/campaign_detail_page.dart` |
+| S05.01 Donasi Dana + sheet 101:6006 | `/donasi/form` | `screens/campaign/donation_form_page.dart`, `widgets/amount_sheet.dart` |
+| S05.04 Pembayaran Donasi | `/donasi/status` | `screens/campaign/payment_status_page.dart` |
+| 101:5873 Terima kasih | `/donasi/berhasil` | `screens/campaign/donation_success_page.dart` |
+| S05.07 Detail Donasi Dana | `/donasi/detail` | `screens/riwayat/donation_detail_page.dart` |
+| S03.01 Ajukan Kampanye (jenis) | `/kampanye/baru` | `screens/campaign/create_campaign_type_page.dart` |
+| S03.02 Informasi Kampanye | `/kampanye/ajukan` | `screens/campaign/submit_campaign_page.dart` |
+| S03.06 Tinjau Pengajuan | `/kampanye/ajukan/tinjau` | `screens/campaign/submit_review_page.dart` |
+| S03.08 Kampanye Saya | `/kampanye/saya` | `screens/campaign/my_campaigns_page.dart` |
+| S03.09 Kelola Kampanye, S07.04 Kampanye Selesai | `/kampanye/kelola` | `screens/campaign/manage_campaign_page.dart` |
+| S08.01 Ajukan Pencairan, S08.02 Status Pencairan | `/kampanye/pencairan` | `screens/campaign/disbursement_page.dart` |
+| S08.06 Laporan Penggunaan Dana | `/kampanye/laporan` | `screens/campaign/fund_report_page.dart` |
+| S08.07 Laporan Bantuan Dana | `/kampanye/laporan/tinjau` | `screens/campaign/fund_report_preview_page.dart` |
+| S04.01 Dashboard Admin | `/admin` | `screens/admin/admin_page.dart` |
+| S04.02 Verifikasi Kampanye | `/admin/kampanye` | `screens/admin/admin_page.dart` |
+| S04.03 Tinjau Kampanye (+ S04.04 dokumen) | `/admin/kampanye/tinjau` | `screens/admin/admin_review_page.dart` |
+| S04.05 Keputusan Pemeriksaan | `/admin/kampanye/keputusan` | `screens/admin/admin_decision_page.dart` |
+| S08.03 Antrean Pencairan | `/admin/pencairan` | `screens/admin/admin_page.dart` |
+| S08.04 Pemeriksaan Pencairan | `/admin/pencairan/periksa` | `screens/admin/admin_disbursement_review_page.dart` |
+| Notifikasi | `/notifikasi` | `screens/notifikasi/notifications_page.dart` (placeholder) |
+
+Belum dibuat (di luar cakupan alur kampanye & donasi dana): S02.05/S03.04/S06/S09 (Barang),
+S07.01–S07.02 (kelola kabar terbaru), S10 (notifikasi & lencana), S11 (kelola admin).
+
+### Komponen Canonical UI (`widgets/its_ui.dart`)
+
+| Komponen | Pemakaian |
+|---|---|
+| `ItsPage` | Kerangka halaman: judul navy rata kiri, latar `primaryLight`, tombol utama di area putih bawah (`bottom:`) |
+| `ItsHeadline` | Judul besar navy 24 + subjudul abu-abu |
+| `InfoCard` | Kartu putih sudut 16; `overline` label kecil biru kapital, `title` 18 SemiBold |
+| `CardText` | Teks isi 14; `muted: true` untuk keterangan 12 abu-abu |
+| `AmountText` | Nominal besar navy (Rp50.000) |
+| `CardButton` | Tombol biru penuh di dalam kartu (tinggi 44); merah: `color: AppColors.danger` |
+| `UploadTile` | Kotak biru muda "+ Unggah dokumen" + daftar berkas terpilih |
+| `FieldLabel` | Label di atas kolom input |
+
+Font Figma: **Manrope** (judul) dan **Inter** (isi). Belum dipasang di proyek; tambahkan lewat `assets/fonts` bila ingin sama persis.
 
 Menu bawah: **Home, Donasi, Riwayat, Profil** (`screens/main_shell.dart`).
 

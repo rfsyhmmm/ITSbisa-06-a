@@ -27,10 +27,7 @@ class SplashPage extends StatelessWidget {
               child: Column(
                 children: [
                   const Spacer(flex: 5),
-                  Image.asset(
-                    'assets/images/logo_itsbisa.png',
-                    width: 260,
-                  ),
+                  Image.asset('assets/images/logo_itsbisa.png', width: 260),
                   const Spacer(flex: 4),
                   PrimaryButton(
                     label: 'Mulai donasi',

@@ -16,14 +16,20 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _index = 0;
+  String _donasiQuery = '';
 
   void _openTab(int index) => setState(() => _index = index);
+
+  void _searchFromHome(String query) => setState(() {
+    _donasiQuery = query;
+    _index = 1;
+  });
 
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomePage(onOpenDonasiTab: () => _openTab(1)),
-      const DonasiPage(),
+      HomePage(onOpenDonasiTab: () => _openTab(1), onSearch: _searchFromHome),
+      DonasiPage(initialQuery: _donasiQuery),
       const RiwayatPage(),
       const ProfilPage(),
     ];

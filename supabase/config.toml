@@ -1,0 +1,13 @@
+project_id = "itsbisa"
+
+# Potongan konfigurasi untuk Supabase CLI.
+# Jika folder supabase/ sudah punya config.toml (hasil `supabase init`),
+# cukup salin dua blok [functions.*] di bawah ke file tersebut.
+
+[functions.create-donation]
+# Autentikasi pengguna diperiksa di dalam kode (auth.getUser), jadi gateway tidak perlu memeriksa JWT.
+verify_jwt = false
+
+[functions.midtrans-notification]
+# Dipanggil server Midtrans tanpa JWT. Keamanan dari signature_key + cek status ke API Midtrans.
+verify_jwt = false

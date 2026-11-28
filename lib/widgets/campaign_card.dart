@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:itsbisa/models/campaign.dart';
 import 'package:itsbisa/theme/app_colors.dart';
 import 'package:itsbisa/utils/formatters.dart';
+import 'package:itsbisa/widgets/campaign_cover.dart';
 import 'package:itsbisa/widgets/primary_button.dart';
 
 /// Kartu kampanye (dipakai di Home dan halaman Donasi).
@@ -36,17 +37,8 @@ class CampaignCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Foto kampanye (sementara kotak warna, nanti diganti Image.network).
-              Container(
-                height: 100,
-                width: double.infinity,
-                color: AppColors.primaryLight,
-                child: const Icon(
-                  Icons.volunteer_activism,
-                  size: 40,
-                  color: AppColors.primary,
-                ),
-              ),
+              // Foto sampul dari bucket campaign-covers.
+              CampaignCover(url: campaign.coverImageUrl),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -98,10 +90,7 @@ class CampaignCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Donasi',
-                          style: TextStyle(fontSize: 12),
-                        ),
+                        const Text('Donasi', style: TextStyle(fontSize: 12)),
                         Text(
                           'Sisa ${campaign.daysLeft} hari',
                           style: const TextStyle(fontSize: 12),

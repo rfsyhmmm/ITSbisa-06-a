@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:itsbisa/models/campaign_extras.dart';
 import 'package:itsbisa/routes/app_routes.dart';
+import 'package:itsbisa/services/campaign_service.dart';
 import 'package:itsbisa/theme/app_colors.dart';
 
 /// Tab Profil. Tombol Keluar dipindah dari halaman "Berhasil masuk" lama.
@@ -13,9 +15,9 @@ class ProfilPage extends StatelessWidget {
       await Supabase.instance.client.auth.signOut();
     } catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal keluar. Coba lagi.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Gagal keluar. Coba lagi.')));
     }
   }
 
@@ -45,7 +47,20 @@ class ProfilPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.campaign_outlined),
             title: const Text('Ajukan kampanye'),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.submitCampaign),
+            onTap: () => Navigator.pushNamed(context, AppRoutes.createCampaign),
+          ),
+          // Panel admin hanya untuk akun dengan profiles.role = 'admin'.
+          FutureBuilder<PayoutInfo>(
+            future: CampaignService.fetchMyProfile(),
+            builder: (context, snap) {
+              if (snap.data?.isAdmin != true) return const SizedBox.shrink();
+              return ListTile(
+                leading: const Icon(Icons.admin_panel_settings_outlined),
+                title: const Text('Panel Admin'),
+                subtitle: const Text('Verifikasi kampanye dan pencairan dana'),
+                onTap: () => Navigator.pushNamed(context, AppRoutes.admin),
+              );
+            },
           ),
           const SizedBox(height: 16),
           OutlinedButton.icon(

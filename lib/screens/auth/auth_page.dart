@@ -81,12 +81,7 @@ class _AuthPageState extends State<AuthPage> {
       backgroundColor: AppColors.primaryLight,
       body: Stack(
         children: [
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: WaveBackground(),
-          ),
+          const Positioned(top: 0, left: 0, right: 0, child: WaveBackground()),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(

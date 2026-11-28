@@ -57,8 +57,9 @@ class _AppTextFieldState extends State<AppTextField> {
           maxLines: widget.isPassword ? 1 : widget.maxLines,
           decoration: InputDecoration(
             hintText: widget.hint,
-            prefixIcon:
-                widget.prefixIcon == null ? null : Icon(widget.prefixIcon),
+            prefixIcon: widget.prefixIcon == null
+                ? null
+                : Icon(widget.prefixIcon),
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
